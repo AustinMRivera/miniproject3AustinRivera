@@ -15,7 +15,7 @@ This is my Flask app for Mini Project 3. It lets users sign up, log in, add inco
 
 ### Dependencies
 
-* Python 3.8 or higher (I used 3.12)
+* Python 3.8 or higher 
 * Windows 10/11 or macOS (tested on Windows)
 * No extra OS stuff needed
 * Install packages with:
