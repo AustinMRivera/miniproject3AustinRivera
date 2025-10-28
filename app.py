@@ -14,7 +14,21 @@ from functools import wraps
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'my_secret_key_change_later'  # I set this random for security
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/finance_tracker.db'  # DB in instance folder
+
+import os
+
+# Get absolute path to current folder (where app.py lives)
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+# Make sure the instance folder exists and is writable
+instance_path = os.path.join(basedir, 'instance')
+os.makedirs(instance_path, exist_ok=True)
+
+# Build the absolute database path
+db_path = os.path.join(instance_path, 'finance_tracker.db')
+
+# Use an absolute SQLite URI
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{db_path}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
