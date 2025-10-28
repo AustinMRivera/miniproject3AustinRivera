@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Entries{% endblock %}
+{% block content %}
+  <h1>Your Entries</h1>
+  <a href="{{ url_for('transactions', type='all') }}" class="btn btn-secondary">All</a>
+  <a href="{{ url_for('transactions', type='income') }}" class="btn btn-secondary">Income</a>
+  <a href="{{ url_for('transactions', type='expense') }}" class="btn btn-secondary">Expenses</a>
+  <table class="table mt-3">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Amount</th>
+        <th>Category</th>
+        <th>Notes</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tx in transactions %}
+        <tr>
+          <td>{{ tx.transaction_type }}</td>
+          <td>${{ tx.amount }}</td>
+          <td>{{ tx.category }}</td>
+          <td>{{ tx.description }}</td>
+          <td>{{ tx.date }}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-url="{{ url_for('delete_transaction', tx_id=tx.id) }}">Delete</button>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Modal for confirm delete -->
+  <div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          Delete this entry?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <form id="deleteForm" method="POST" action="">
+            <button type="submit" class="btn btn-danger">Yes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% block scripts %}
+    <script>
+      const deleteModal = document.getElementById('deleteModal');
+      deleteModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget;
+        const url = button.getAttribute('data-url');
+        document.getElementById('deleteForm').action = url;
+      });
+    </script>
+  {% endblock %}
+{% endblock %}
