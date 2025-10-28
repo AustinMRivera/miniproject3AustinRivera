@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+  <h1>Your Dashboard</h1>
+  <p>Balance: ${{ balance }}</p>
+  <p>Income: ${{ income }}</p>
+  <p>Expenses: ${{ expense }}</p>
+  <h2>Recent Entries</h2>
+  <ul>
+    {% for tx in recent %}
+      <li>{{ tx.transaction_type }}: ${{ tx.amount }} ({{ tx.category }}) - {{ tx.date }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
